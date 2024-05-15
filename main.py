@@ -15,3 +15,13 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 scaler = StandardScaler().fit(X_train)
 X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
+
+num_qubits = 2
+feature_map = ZZFeatureMap(feature_dimension=num_qubits, reps=2, entanglement='linear')
+var_form = RealAmplitudes(num_qubits, reps=3)
+
+
+
+# Set up the variational quantum classifier
+vqc = VQC(feature_map=feature_map, var_form=var_form, optimizer=SPSA(max_trials=100),
+          quantum_instance=QuantumInstance(Aer.get_backend('qasm_simulator'), shots=1024))
